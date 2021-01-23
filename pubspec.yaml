@@ -1,6 +1,6 @@
 name: bottom
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: Dart library for translating between bottom and human-readable text.
+version: 1.0.1
 homepage: https://github.com/oliver-ni/bottom-dart
 
 environment:
