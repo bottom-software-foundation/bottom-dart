@@ -2,6 +2,7 @@ library bottom;
 
 import 'dart:convert';
 
+// Making values for use later
 Map<String, int> _charValues = {
   '🫂': 200,
   '💖': 50,
@@ -12,8 +13,8 @@ Map<String, int> _charValues = {
 
 const _null = '\u2764';
 const _sectionSeparator = '👉👈';
-final _terminator = RegExp('$_sectionSeparator?\$');
 
+// Encodes string to bottom
 class BottomEncoder extends Converter<String, String> {
   String _encodeByte(int value) {
     if (value == 0) return '';
@@ -35,14 +36,16 @@ class BottomEncoder extends Converter<String, String> {
   }
 }
 
+// Decodes bottom to top readable text
 class BottomDecoder extends Converter<String, String> {
   @override
   String convert(String input) {
-    var sections =
-        input.trim().replaceAll(_terminator, '').split(_sectionSeparator);
-
     var codes = List<int>.empty(growable: true);
-    for (var char in sections) {
+
+    for (var char in input
+        .trim()
+        .replaceAll(RegExp('$_sectionSeparator?\$'), '')
+        .split(_sectionSeparator)) {
       var code = 0;
       char.runes.forEach((element) {
         code += _charValues[String.fromCharCode(element)] ??= 0;
@@ -59,7 +62,7 @@ class BottomCodec extends Codec<String, String> {
   BottomEncoder get encoder => BottomEncoder();
 
   @override
-  BottomDecoder get decoder => BottomDecoder(); //BottomDecoder();
+  BottomDecoder get decoder => BottomDecoder();
 }
 
 final bottom = BottomCodec();
