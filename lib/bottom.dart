@@ -3,11 +3,11 @@ library bottom;
 import 'dart:convert';
 
 Map<String, int> _charValues = {
-  '\🫂': 200,
-  '\💖': 50,
-  '\✨': 10,
-  '\🥺': 5,
-  '\,': 1,
+  '🫂': 200,
+  '💖': 50,
+  '✨': 10,
+  '🥺': 5,
+  ',': 1,
 };
 
 const _null = '\u2764';
