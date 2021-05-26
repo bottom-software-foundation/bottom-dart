@@ -3,14 +3,14 @@ library bottom;
 import 'dart:convert';
 
 Map<String, int> _charValues = {
-  '🫂': 200,
-  '💖': 50,
-  '✨': 10,
-  '🥺': 5,
-  ',': 1,
+  '\🫂': 200,
+  '\💖': 50,
+  '\✨': 10,
+  '\🥺': 5,
+  '\,': 1,
 };
 
-const _zero = '❤️';
+const _null = '\u2764';
 const _sectionSeparator = '👉👈';
 final _terminator = RegExp('$_sectionSeparator?\$');
 
@@ -23,7 +23,7 @@ class BottomEncoder extends Converter<String, String> {
   }
 
   String encodeByte(int value) {
-    return value == 0 ? _zero : _encodeByte(value);
+    return value == 0 ? _null : _encodeByte(value);
   }
 
   @override
@@ -38,14 +38,19 @@ class BottomEncoder extends Converter<String, String> {
 class BottomDecoder extends Converter<String, String> {
   @override
   String convert(String input) {
-    return utf8.decode(input
-        .trim()
-        .replaceAll(_terminator, '')
-        .split(_sectionSeparator)
-        .map((chars) => chars
-            .split('')
-            .map((x) => _charValues[x])
-            .reduce((a, b) => a + b)));
+    var sections =
+        input.trim().replaceAll(_terminator, '').split(_sectionSeparator);
+
+    var codes = List<int>.empty(growable: true);
+    for (var char in sections) {
+      var code = 0;
+      char.runes.forEach((element) {
+        code += _charValues[String.fromCharCode(element)] ??= 0;
+      });
+      codes.add(code);
+    }
+
+    return utf8.decode(codes);
   }
 }
 
@@ -54,7 +59,7 @@ class BottomCodec extends Codec<String, String> {
   BottomEncoder get encoder => BottomEncoder();
 
   @override
-  BottomDecoder get decoder => BottomDecoder();
+  BottomDecoder get decoder => BottomDecoder(); //BottomDecoder();
 }
 
 final bottom = BottomCodec();
