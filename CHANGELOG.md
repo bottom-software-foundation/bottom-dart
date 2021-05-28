@@ -1,3 +1,7 @@
+## 2.1.0
+
+ * Fixed fatal bug with decoding.
+
 ## 2.0.0
 
  * Added null safety.

@@ -42,9 +42,8 @@ class BottomDecoder extends Converter<String, String> {
         .trim()
         .replaceAll(_terminator, '')
         .split(_sectionSeparator)
-        .map((chars) => chars
-            .split('')
-            .map((x) => _charValues[x] ?? 0)
+        .map((chars) => chars.runes
+            .map((x) => _charValues[String.fromCharCode(x)] ?? 0)
             .reduce((a, b) => a + b))
         .toList());
   }
